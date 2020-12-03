@@ -1,0 +1,19 @@
+@margin_left_primary:20px;
+
+& when (@media-common = true) {
+    h2.title{
+        color: blue;
+    }
+    ul{
+        list-style-type: none;
+    }
+    li:nth-child(even) {
+        margin-left: @margin_left_primary;
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    h2.title{
+        color: black;
+    }
+}

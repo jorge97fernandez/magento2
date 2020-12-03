@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Preference for Reverse Dependency -->
+    <preference for="Hiberus\Fernandez\Api\Data\ExamInterface" type="Hiberus\Fernandez\Model\Exam"/>
+    <preference for="Hiberus\Fernandez\Api\ExamRepositoryInterface" type="Hiberus\Fernandez\Model\ExamRepository"/>
+    <preference for="Hiberus\Fernandez\Api\Data\ExamSearchResultsInterface" type="Hiberus\Fernandez\Model\ExamSearchResults" />
+
+    <!-- Register the Abstract Repositories -->
+    <type name="Magento\Framework\Model\Entity\RepositoryFactory">
+        <arguments>
+            <argument name="entities" xsi:type="array">
+                <item name="Hiberus\Fernandez\Api\ExamInterface" xsi:type="string">Hiberus\Fernandez\Api\ExamRepositoryInterface</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\EntityManager\MetadataPool">
+        <arguments>
+            <argument name="metadata" xsi:type="array">
+                <item name="Hiberus\Fernandez\Api\Data\ExamInterface" xsi:type="array">
+                    <item name="entityTableName" xsi:type="string">hiberus_exam</item>
+                    <item name="identifierField" xsi:type="string">id_exam</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Register the hydrator strategy for our entities -->
+    <type name="Magento\Framework\EntityManager\HydratorPool">
+        <arguments>
+            <argument name="hydrators" xsi:type="array">
+                <item name="Hiberus\Fernandez\Api\Data\ExamInterface" xsi:type="string">Magento\Framework\EntityManager\AbstractModelHydrator</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Register the plugin -->
+    <type name="Hiberus\Fernandez\Block\Exams\ExamList">
+        <plugin name="hiberusfernandez_plugin" type="Hiberus\Fernandez\Plugin\PluginNota" disabled="true" />
+    </type>
+
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="hiberus:fernandez" xsi:type="object">Hiberus\Fernandez\Console\Command\ExamListCommand</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Logger -->
+    <virtualType name="Hiberus\Fernandez\Logger\FernandezDebug" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/hiberus_fernandez.log</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Hiberus\Fernandez\Logger\Monolog" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">Hiberus\Fernandez\Logger\FernandezDebug</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Hiberus\Fernandez\Block\Exams\ExamList">
+        <arguments>
+            <argument name="logger" xsi:type="object">Hiberus\Fernandez\Logger\Monolog</argument>
+        </arguments>
+    </type>
+</config>

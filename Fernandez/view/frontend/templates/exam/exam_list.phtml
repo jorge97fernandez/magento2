@@ -1,0 +1,38 @@
+
+<?php /** @var \Hiberus\Fernandez\Block\Exams\ExamList $block */ ?>
+
+<ul>
+    <li>
+        <span class="col1"><?= $escaper->escapeHtml("FirstName") ?></span>
+        <span class="col2"><?= $escaper->escapeHtml("LastName") ?></span>
+        <span class="col3"><?= $escaper->escapeHtml("Mark") ?></span>
+    </li>
+    <?php foreach ($block->getExamList() as $examList): ?>
+        <li>
+            <span class="col1" style="background-color: <?=$examList["mark"] > 5.0 ? "green":"red"?>"><?= $escaper->escapeHtml($examList["firstname"]) ?></span>
+            <span class="col2" style="background-color: <?=$examList["mark"] > 5.0 ? "green":"red"?>"><?= $escaper->escapeHtml($examList["lastname"]) ?></span>
+            <span class="col3" style="background-color: <?=$examList["mark"] > 5.0 ? "green":"red"?>"><?= $escaper->escapeHtml($examList["mark"]) ?></span>
+            <?if ($examList["top3"] == "Y"): ?>
+            <span class="col4" style="background-color: <?=$examList["mark"] > 5.0 ? "green":"red"?>"><?= $escaper->escapeHtml("Top3") ?></span>
+            <? endif;?>
+        </li>
+    <?php endforeach; ?>
+</ul>
+
+<p>Total number of students:<?=$block->getExamCount()?></p>
+<p>Nota media: <?=$block->getMediaNotas()?></p>
+
+<button class="modificarNotas">Ver/Ocultar Notas</button>
+<button class="notaAlta">Ver Nota mas alta</button>
+
+<script type="text/x-magento-init">
+{
+     ".modificarNotas": {
+          "Hiberus_Fernandez/js/ocultarnotas": {}
+     },
+     ".notaAlta": {
+          "Hiberus_Fernandez/js/notamasalta": {}
+     }
+
+}
+</script>
